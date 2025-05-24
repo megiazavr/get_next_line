@@ -6,24 +6,135 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 18:07:34 by megiazar          #+#    #+#             */
-/*   Updated: 2025/05/23 17:05:35 by megiazar         ###   ########.fr       */
+/*   Updated: 2025/05/24 18:19:52 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*fill_buf(int fd, char *tail, char *buf)
+static int	has_newline(char *s)
 {
-	int	bytes_read;
+	int i = 0;
+	if (!s)
+		return (0);
+	while (s[i])
+	{
+		if (s[i] == '\n')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+static char	*str_join_and_free(char *a, char *b)
+{
+	int i;
+	int	j;
+	char *new_str;
+
+	while (a && a[i])
+		i++;
+	while (b && b[j])
+		j++;
+	new_str = malloc(i + j + 1);
+	if (!new_str)
+		return (NULL);
+	i = 0;
+	while (a && a[i])
+		new_str[i++] = a[i];
+	j = 0;
+	while (b && b[j])
+		new_str[i++] = b[j++];
+	new_str[i] = '\0';
+	if (a)
+		free(a);
+	return (new_str);
+}
+
+static char	*get_line(char *s)
+{
+	int i = 0;
+	char *line;
+
+	if (!s || s[0] == '\0')
+		return (NULL);
+	while (s[i] && s[i] != '\n')
+		i++;
+	line = malloc(i + (s[i] == '\n') + 1);
+	if (!line)
+		return (NULL);
+	i = 0;
+	while (s[i] && s[i] != '\n')
+	{
+		line[i] = s[i];
+		i++;
+	}
+	if (s[i] == '\n')
+		line[i++] = '\n';
+	line[i] = '\0';
+	return (line);
+}
+
+static char	*cut_tail(char *s)
+{
+	int i;
+	int	j;
+	char *new_s;
+
+	i = 0;
+	while (s[i] && s[i] != '\n')
+		i++;
+	if (!s[i])
+		return (free(s), NULL);
+	new_s = malloc((strlen(s) - i) + 1);
+	if (!new_s)
+		return (NULL);
+	i++;
+	j = 0;
+	while (s[i])
+		new_s[j++] = s[i++];
+	new_s[j] = '\0';
+	free(s);
+	return (new_s);
+}
+
+char	*get_next_line(int fd)
+{
+	static char	*store;
+	char		tmp[BUFFER_SIZE + 1];
+	int			rd;
+	char		*line;
+
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	rd = 1;
+	while (!has_newline(store) && rd > 0)
+	{
+		rd = read(fd, tmp, BUFFER_SIZE);
+		if (rd <= 0)
+			break ;
+		tmp[rd] = 0;
+		store = str_join_and_free(store, tmp);
+	}
+	line = get_line(store);
+	store = cut_tail(store);
+	return (line);
+}
+
+/* char	*fill_buf(char *tail, char *buf)
+{
+	int	i;
 	char	*tmp;
 
-	bytes_read = 1;
-	while (!ft_strchr(tail, '\n') && bytes_read > 0)
+	i = 1;
+	while (tail[i] != '\n' && tail[i])
+		i++;
+	while (!ft_strchr(tail, '\n') && i > 0)
 	{
-		bytes_read = read(fd, buf, BUFFER_SIZE);
-		if (bytes_read <= 0)
-			return (free (buffer), NULL);
-		buf[bytes_read] = '\0';
+		i = read(buf, BUFFER_SIZE);
+		if (i <= 0)
+			return (tail);
+		buf[i] = '\0';
 		tmp = ft_strjoin(tail, buf);
 		free(tail);
 		tail = tmp;
@@ -39,7 +150,7 @@ char	*get_next_line(int fd)
 	char		*tmp;
 	int			len;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || !buf)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	if (!tail)
 		tail = ft_strdup("");
@@ -49,7 +160,11 @@ char	*get_next_line(int fd)
 	tail = fill_buf(fd, tail, buf);
 	free(buf);
 	if (!tail || (tail[0] == '\0'))
-		return (free(tail), tail = NULL, NULL);
+	{
+		free(tail);
+		tail = NULL;
+		return (NULL);
+	}
 	len = 0;
 	while (tail[len] && tail[len] != '\n')
 		len++;
@@ -57,14 +172,53 @@ char	*get_next_line(int fd)
 		len++;
 	line = ft_substr(tail, 0, len);
 	if (!line)
-		return (free(tail), tail = NULL, NULL)
+	{
+		free(tail);
+		tail = NULL;
+		return (NULL);
+	}
 	tmp = ft_strdup(tail + len);
 	free(tail);
 	tail = tmp;
 	return (line);
 }
+ */
 
-int	main(void)
+int main(int ac, char **av)
+{
+	(void)ac;
+	char *line;
+	int fd1 = open(av[1], O_RDONLY);
+
+	while ((line = get_next_line(fd1)) != NULL)
+	{
+		printf("%s", line);
+		free(line);
+	}
+	close(fd1);
+	return (0);
+}
+
+/* int   main(int ac, char **av)
+{
+  char  *line;
+  int   fd1;
+  int   fd2;
+
+  fd1 = open(av[1], O_RDONLY);
+  fd2 = open(av[2], O_RDONLY);
+  get_next_line(fd1);
+  printf("%s\n", line);
+  get_next_line(fd1);
+  printf("%s\n", line);
+  get_next_line(fd1);
+  printf("%s\n", line);
+  get_next_line(fd1);
+  printf("%s\n", line);
+  return (0);
+} */
+
+/* int	main(void)
 {
 	int		fd;
 	char	*line;
@@ -115,5 +269,5 @@ int	main(void)
 	}
 	close(fd);
 	return (0);
-}
+} */
 
