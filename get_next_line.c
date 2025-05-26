@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 18:07:34 by megiazar          #+#    #+#             */
-/*   Updated: 2025/05/26 17:23:57 by megiazar         ###   ########.fr       */
+/*   Updated: 2025/05/26 18:49:03 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ char	*get_next_line(int fd)
 	store = cut_tail(store);
 	return (line);
 }
-
-/* int main(int ac, char **av)
+/*
+int main(int ac, char **av)
 {
 	(void)ac;
 	char *line;
@@ -57,7 +57,7 @@ char	*get_next_line(int fd)
 	}
 	close(fd1);
 	return (0);
-} */
+}*/
 /* 
 char	*fill_buf(char *tail, char *buf)
 {
