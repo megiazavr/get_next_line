@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 18:08:07 by megiazar          #+#    #+#             */
-/*   Updated: 2025/05/26 17:23:11 by megiazar         ###   ########.fr       */
+/*   Updated: 2025/05/27 16:04:31 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,11 @@
 # include <limits.h>
 
 char	*str_join_and_free(char *a, char *b);
-char	*get_line(char *s);
+char	*next_line(char *str);
 char	*cut_tail(char *s);
 char	*get_next_line(int fd);
 int		has_newline(char *s);
+int		binary_or_bipolar(int fd);
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
