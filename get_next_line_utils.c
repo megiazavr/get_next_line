@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:13:12 by megiazar          #+#    #+#             */
-/*   Updated: 2025/05/27 16:04:08 by megiazar         ###   ########.fr       */
+/*   Updated: 2025/05/27 17:04:00 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,20 +108,31 @@ char	*cut_tail(char *s)
 	return (new_s);
 }
 
-int	binary_or_bipolar(int fd)
+/* int	binary_or_bipolar(int fd)
 {
 	unsigned char	buf[512];
 	int				bytes_read;
+	int				count;
 	int				i;
 
 	bytes_read = read(fd, buf, 512);
 	if (bytes_read <= 0)
 		return (0);
 	i = 0;
+	count = 0;
 	while (i < bytes_read)
 	{
-		if (buf[i++] == 0)
-			return (1);
+		if (buf[i] == 0)
+		{
+			count++;
+			if (count > 1)
+				return (1);
+		}
+		else
+		{
+			count = 0;
+		}
+		i++;
 	}
 	return (0);
-}
+} */

@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 18:07:34 by megiazar          #+#    #+#             */
-/*   Updated: 2025/05/27 16:13:46 by megiazar         ###   ########.fr       */
+/*   Updated: 2025/05/27 17:04:32 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*get_next_line(int fd)
 		return (NULL);
 	tmp = malloc(BUFFER_SIZE + 1);
 	if (!tmp)
-		return (NULL);
+		return (free(tmp), NULL);
 	read_bytes = 1;
 	while (!has_newline(store) && read_bytes > 0)
 	{
@@ -43,23 +43,23 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-/* int main(int ac, char **av)
+int main(int ac, char **av)
 {
     (void)ac;
     char *line;
-    int fd1 = open(av[1], O_RDONLY);
+    int fd1 = open("example.txt", O_RDONLY);
 
     if (fd1 < 0)
     {
         perror("EEEW errors opening file\n");
         return (-1);
     }
-    if (binary_or_bipolar(fd1))
+/*     if (binary_or_bipolar(fd1))
     {
         printf("EEEEEWWWWW its a binary file\n");
         close(fd1);
         return (0);
-    }
+    }  */
     while ((line = get_next_line(fd1)) != NULL)
     {
         printf("%s", line);
@@ -67,4 +67,5 @@ char	*get_next_line(int fd)
     }
     close(fd1);
     return (0);
-} */
+} 
+ 
