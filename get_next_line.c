@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 18:07:34 by megiazar          #+#    #+#             */
-/*   Updated: 2025/05/29 15:37:21 by megiazar         ###   ########.fr       */
+/*   Updated: 2025/05/29 16:08:38 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-int main(int ac, char **av)
+/* int main(int ac, char **av)
 {
 	int count;
 	int fd;
@@ -55,4 +55,4 @@ int main(int ac, char **av)
     }
     close(fd);
     return 0;
-}
+} */
