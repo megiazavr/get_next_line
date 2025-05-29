@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 18:07:34 by megiazar          #+#    #+#             */
-/*   Updated: 2025/05/27 18:16:55 by megiazar         ###   ########.fr       */
+/*   Updated: 2025/05/29 15:37:21 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,53 +14,45 @@
 
 char	*get_next_line(int fd)
 {
-	int				count_bytes;
 	static char		*store;
 	char			*line;
-	char			*tmp;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
-	tmp = malloc(BUFFER_SIZE + 1);
-	if (!tmp)
-		return (free(tmp), NULL);
-	count_bytes = 1;
-	while (!has_newline(store) && count_bytes > 0)
-	{
-		count_bytes = read(fd, tmp, BUFFER_SIZE);
-		if (count_bytes == -1)
-			return (free(tmp), free(store), store = NULL, NULL);
-		tmp[count_bytes] = '\0';
-		store = str_join_and_free(store, tmp);
-		if (!store)
-			return (free(tmp), free(store), store = NULL, NULL);
-	}
-	free(tmp);
+	store = half_gnl(fd, store);
+	if (!store)
+		return (NULL);
 	line = next_line(store);
 	if (!line)
 		return (free(store), store = NULL, NULL);
 	store = cut_tail(store);
+	if (!store)
+		return (line);
 	return (line);
 }
 
 int main(int ac, char **av)
 {
-    (void)ac;
-    char *line;
-    int fd1 = open(av[1], O_RDONLY);
+	int count;
+	int fd;
+	char *next_line;
 
-    if (fd1 < 0)
+	count = 0;
+	if (ac < 2)
+        fd = 0;
+	else
+        fd = open(av[1], O_RDONLY);
+    if (fd < 0)
     {
-        perror("EEEW errors opening file\n");
-        return (-1);
-    }
-	while ((line = get_next_line(fd1)) != NULL)
+        perror("EWWWWWWWWW an error by opening the file");
+        return (1);
+	}
+    while ((next_line = get_next_line(0)) != NULL)
     {
-        printf("%s", line);
-        free(line);
+        count++;
+        printf("[%d]: %s\n", count, next_line);
+        free(next_line);
     }
-	printf("%s", get_next_line(fd1));
-    close(fd1);
-    return (0);
-} 
- 
+    close(fd);
+    return 0;
+}

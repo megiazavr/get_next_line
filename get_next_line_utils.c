@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:13:12 by megiazar          #+#    #+#             */
-/*   Updated: 2025/05/27 19:14:28 by megiazar         ###   ########.fr       */
+/*   Updated: 2025/05/29 12:54:43 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ char	*cut_tail(char *s)
 	i++;
 	while (s[i + len])
 		len++;
+	if (len == 0)
+		return (free(s), NULL);
 	new_s = malloc(len + 1);
 	if (!new_s)
 		return (free(s), NULL);
@@ -106,6 +108,31 @@ char	*cut_tail(char *s)
 	new_s[j] = '\0';
 	free(s);
 	return (new_s);
+}
+
+char	*half_gnl(int fd, char *store)
+{
+	char	*tmp;
+	int		count_bytes;
+
+	tmp = malloc(BUFFER_SIZE + 1);
+	if (!tmp)
+		return (NULL);
+	count_bytes = 1;
+	while (!has_newline(store) && count_bytes > 0)
+	{
+		count_bytes = read(fd, tmp, BUFFER_SIZE);
+		if (count_bytes == -1)
+			break ;
+		tmp[count_bytes] = '\0';
+		store = str_join_and_free(store, tmp);
+		if (!store)
+			break ;
+	}
+	free(tmp);
+	if (count_bytes == -1 || !store || *store == '\0')
+		return (free(store), NULL);
+	return (store);
 }
 
 /* int	binary_or_bipolar(int fd)

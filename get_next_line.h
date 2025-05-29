@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 18:08:07 by megiazar          #+#    #+#             */
-/*   Updated: 2025/05/27 18:03:58 by megiazar         ###   ########.fr       */
+/*   Updated: 2025/05/29 12:53:07 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ char	*next_line(char *str);
 char	*cut_tail(char *s);
 char	*get_next_line(int fd);
 int		has_newline(char *s);
+char	*half_gnl(int fd, char *store);
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
