@@ -6,7 +6,7 @@
 /*   By: megiazar <megiazar@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 18:07:34 by megiazar          #+#    #+#             */
-/*   Updated: 2025/05/29 16:08:38 by megiazar         ###   ########.fr       */
+/*   Updated: 2025/05/29 16:17:59 by megiazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	*get_next_line(int fd)
         perror("EWWWWWWWWW an error by opening the file");
         return (1);
 	}
-    while ((next_line = get_next_line(0)) != NULL)
+    while ((next_line = get_next_line(fd)) != NULL)
     {
         count++;
         printf("[%d]: %s\n", count, next_line);
